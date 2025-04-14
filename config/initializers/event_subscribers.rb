@@ -10,9 +10,12 @@ Rails.application.config.after_initialize do
       client_id: kafka_config[:client_id],
       consumer_group: kafka_config[:consumer_group]
     )
+    
+    require Rails.root.join('app/events/subscribers/order_created_event_handler')
+    require Rails.root.join('app/events/subscribers/order_status_changed_event_handler')
 
-    subscriber.subscribe('OrderCreated', Events::Subscribers::OrderCreatedEventHandler.new)
-    subscriber.subscribe('OrderStatusChanged', Events::Subscribers::OrderStatusChangedEventHandler.new)
+    subscriber.subscribe('OrderCreated', ::Events::Subscribers::OrderCreatedEventHandler.new)
+    subscriber.subscribe('OrderStatusChanged', ::Events::Subscribers::OrderStatusChangedEventHandler.new)
 
     Rails.logger.info "Product Service event subscribers registered successfully"
   rescue => e

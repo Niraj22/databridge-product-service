@@ -24,7 +24,11 @@ class Inventory < ApplicationRecord
   
   def check_low_stock
     if low_stock?
-      publisher = DataBridgeShared::Clients::EventPublisher.new
+      kafka_config = Rails.application.credentials.kafka
+      publisher = DataBridgeShared::Clients::EventPublisher.new(
+        seed_brokers: kafka_config[:brokers],
+        client_id: kafka_config[:client_id]
+      )
       publisher.publish('InventoryLow', {
         product_id: product_id,
         quantity: quantity,
@@ -35,7 +39,11 @@ class Inventory < ApplicationRecord
   end
   
   def publish_inventory_changed_event
-    publisher = DataBridgeShared::Clients::EventPublisher.new
+    kafka_config = Rails.application.credentials.kafka
+    publisher = DataBridgeShared::Clients::EventPublisher.new(
+      seed_brokers: kafka_config[:brokers],
+      client_id: kafka_config[:client_id]
+    )
     publisher.publish('InventoryChanged', {
       product_id: product_id,
       old_quantity: quantity_before_last_save,

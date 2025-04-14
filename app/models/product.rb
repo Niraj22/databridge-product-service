@@ -29,7 +29,11 @@ class Product < ApplicationRecord
         created_at: created_at.iso8601
       }
       
-      publisher = DataBridgeShared::Clients::EventPublisher.new
+      kafka_config = Rails.application.credentials.kafka
+      publisher = DataBridgeShared::Clients::EventPublisher.new(
+        seed_brokers: kafka_config[:brokers],
+        client_id: kafka_config[:client_id]
+      )
       publisher.publish('ProductCreated', event_data)
     end
     
@@ -42,7 +46,11 @@ class Product < ApplicationRecord
         updated_at: updated_at.iso8601
       }
       
-      publisher = DataBridgeShared::Clients::EventPublisher.new
+      kafka_config = Rails.application.credentials.kafka
+      publisher = DataBridgeShared::Clients::EventPublisher.new(
+        seed_brokers: kafka_config[:brokers],
+        client_id: kafka_config[:client_id]
+      )
       publisher.publish('ProductUpdated', event_data)
     end
     
@@ -75,7 +83,11 @@ class Product < ApplicationRecord
       )
       
       # Publish price change event
-      publisher = DataBridgeShared::Clients::EventPublisher.new
+      kafka_config = Rails.application.credentials.kafka
+      publisher = DataBridgeShared::Clients::EventPublisher.new(
+        seed_brokers: kafka_config[:brokers],
+        client_id: kafka_config[:client_id]
+      )
       publisher.publish('PriceChanged', {
         product_id: id,
         old_price: current_price_history&.price,

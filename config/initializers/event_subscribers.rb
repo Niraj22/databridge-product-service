@@ -12,8 +12,8 @@ Rails.application.config.after_initialize do
       )
       
       # Register event handlers
-      subscriber.subscribe('OrderCreated', Events::Subscribers::OrderCreatedEventHandler.new)
-      subscriber.subscribe('OrderStatusChanged', Events::Subscribers::OrderStatusChangedEventHandler.new)
+      # subscriber.subscribe('OrderCreated', Events::Subscribers::OrderCreatedEventHandler.new)
+      # subscriber.subscribe('OrderStatusChanged', Events::Subscribers::OrderStatusChangedEventHandler.new)
       
       Rails.logger.info "Product Service event subscribers registered successfully"
     rescue => e

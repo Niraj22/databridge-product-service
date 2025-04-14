@@ -1,7 +1,7 @@
 # app/events/subscribers/order_status_changed_event_handler.rb
 module Events
-    module Subscribers
-      class OrderStatusChangedEventHandler
+  module Subscribers
+    class OrderStatusChangedEventHandler
         def handle(event)
           Rails.logger.info("Received OrderStatusChanged event: #{event.inspect}")
   

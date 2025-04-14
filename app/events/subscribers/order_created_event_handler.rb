@@ -1,7 +1,7 @@
 # app/events/subscribers/order_created_event_handler.rb
 module Events
-    module Subscribers
-      class OrderCreatedEventHandler
+  module Subscribers
+    class OrderCreatedEventHandler
         def handle(event)
           Rails.logger.info("Received OrderCreated event: #{event.inspect}")
           

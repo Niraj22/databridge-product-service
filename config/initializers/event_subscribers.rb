@@ -1,8 +1,4 @@
 # config/initializers/event_subscribers.rb
-
-require Rails.root.join('app/events/subscribers/order_created_event_handler').to_s
-require Rails.root.join('app/events/subscribers/order_status_changed_event_handler').to_s
-
 Rails.application.config.after_initialize do
   return if Rails.env.test? || !defined?(::Kafka)
 
@@ -15,7 +11,6 @@ Rails.application.config.after_initialize do
       consumer_group: kafka_config[:consumer_group]
     )
 
-    # Register event handlers
     subscriber.subscribe('OrderCreated', Events::Subscribers::OrderCreatedEventHandler.new)
     subscriber.subscribe('OrderStatusChanged', Events::Subscribers::OrderStatusChangedEventHandler.new)
 
